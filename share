@@ -1,0 +1,130 @@
+var initMap = function() {
+  var s = document.createElement("script");
+  s.type = "text/javascript";
+  s.src = "js/infobox.js";
+  $("head").append(s);
+  var map = new google.maps.Map(document.getElementById('map-wrap'), {
+    center: {lat: 33.78444500, lng: -118.15378000},
+    zoom: 8
+  });
+}
+
+var marker, i;
+marker = new google.maps.Marker({
+   position: new google.maps.LatLng(22.556444, -44.565),
+   map: map
+})
+
+var ibOptions = {
+    		disableAutoPan: false
+    		,maxWidth: 0
+    		,pixelOffset: new google.maps.Size(-140, 0)
+    		,zIndex: null
+    		,boxStyle: {
+          padding: "0px 0px 0px 0px",
+          width: "252px",
+          height: "40px"
+        },
+        closeBoxURL : "",
+        infoBoxClearance: new google.maps.Size(1, 1),
+    		isHidden: false,
+    		pane: "floatPane",
+    		enableEventPropagation: false
+    	};
+      
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+      return function() {
+        var source   = $("#infobox-template").html();
+        var template = Handlebars.compile(source);
+ 
+        var boxText = document.createElement("div");
+        boxText.style.cssText = "margin-top: 8px; background: #fff; padding: 0px;";
+        boxText.innerHTML = template(subSet[i]);
+ 
+        ibOptions.content = boxText
+        var ib = new InfoBox(ibOptions);
+      	ib.open(map, marker);
+        map.panTo(ib.getPosition());
+      }
+  })
+  
+  <div class="info-box-wrap">
+  <img src="{{img_src}}" />
+  <div class="info-box-text-wrap">
+  <h6 class="address">{{address}}, {{city}} {{zip}} {{state}}</h6>
+  <p class="price">{{price}}</p>
+</div>
+<div class="action-btns"></div> 
+</div>
+
+
+.info-box-wrap {
+  background:#fff;
+  overflow: hidden;
+  box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.08);
+}
+.info-box-text-wrap {
+  height:40px !important;
+  width:120px;
+  float:left;
+  overflow: hidden;
+}
+.action-btns {
+  float:left;
+  width:70px;
+  overflow: hidden;
+  position: relative;
+  top:12px;
+  left: 6px;
+}
+.action-btns i {
+  font-size: 18px;
+  color: #78A737;
+  margin-left: 3px;
+}
+.action-btns i:hover {
+  transition: color 0.5s ease;
+  color:#ccc;
+  cursor: pointer;
+}
+.action-btns i.fa-heart-o {
+  font-weight: bold;
+}
+.info-box-text-wrap h6.address {
+  padding:6px 5px 1px 0;
+  margin:0 0 0 0;
+  font-family:"Roboto Slab";
+  color: #0c99c8;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.info-box-text-wrap p {
+  padding:0 0 0 0;
+  margin:0 0 0 0;
+}
+.info-box-text-wrap p.price {
+  color:#B25B00;
+}
+ 
+.info-box-wrap  img {
+  width:40px !important;
+  height:40px;
+  float:left;
+  margin-right: 10px;
+  padding-top:0;
+  margin-top:0;
+}
+
+.infoBox:before{
+  content : " ";
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #fff;
+  position:absolute;
+  top:-10px;
+  left:130px;
+}
